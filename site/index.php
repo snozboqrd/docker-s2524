@@ -1,3 +1,3 @@
 <?php
-  echo "PHP OK !\n";
+  echo "PHP OK (Mardi) !\n";
 ?>
