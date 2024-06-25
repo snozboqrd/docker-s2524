@@ -25,4 +25,5 @@ networks:
 
 volumes:
   hellostatus:
+    name: autrenom
     external: true
