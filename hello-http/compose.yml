@@ -12,6 +12,13 @@ services:
     restart: always
     networks:
       hellonet:
+        ipv4_address: 172.88.0.100
 
 networks:
   hellonet:
+    ipam:
+      config:
+        - subnet: 172.88.0.0/16
+          gateway: 172.88.0.254
+    driver_opts:
+      com.docker.network.bridge.name: hellonet0
