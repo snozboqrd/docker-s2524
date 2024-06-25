@@ -1,0 +1,17 @@
+---
+services:
+  hello:
+    image: bob2606/hello-http:0.8.15
+    container_name: hello
+    environment:
+      - PORT=80
+    ports:
+      - 8080:80
+    volumes:
+      - ./hellostatus:/var/lib/hello-http
+    restart: always
+    networks:
+      hellonet:
+
+networks:
+  hellonet:
