@@ -1,4 +1,11 @@
 ---
+x-logging: &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-file: 5
+      max-size: 10m
+
 services:
   aww:
     image: ${NGINX_IMAGE_NAME}:${NGINX_IMAGE_TAG}
@@ -8,10 +15,12 @@ services:
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
       - ./site:/usr/share/nginx/html
+      - ./nginxlog:/var/log/nginx
     restart: always
     networks:
       lempnet:
         ipv4_address: 172.80.0.100
+    <<: *default-logging
 
   php:
     image: ${PHP_IMAGE_NAME}:${PHP_IMAGE_TAG}
@@ -24,6 +33,7 @@ services:
     networks:
       lempnet:
         ipv4_address: 172.80.0.150
+    <<: *default-logging
 
   db:
     image: ${MARIADB_IMAGE_NAME}:${MARIADB_IMAGE_TAG}
@@ -37,6 +47,7 @@ services:
     networks:
       lempnet:
         ipv4_address: 172.80.0.200
+    <<: *default-logging
 
 networks:
   lempnet:
