@@ -1,25 +1,25 @@
 ---
 services:
   hello:
-    image: bob2606/hello-http:0.8.15
+    image: ${HELLO_IMAGE_NAME}:${HELLO_IMAGE_TAG:-latest}
     container_name: hello
     environment:
-      - PORT=80
+      - PORT=${HELLO_PORT:-80}
     ports:
-      - 8080:80
+      - 8080:${HELLO_PORT:-80}
     volumes:
       - hellostatus:/var/lib/hello-http
     restart: always
     networks:
       hellonet:
-        ipv4_address: 172.88.0.100
+        ipv4_address: ${HELLO_NET}.${HELLO_IPV4:?IP undefined}
 
 networks:
   hellonet:
     ipam:
       config:
-        - subnet: 172.88.0.0/16
-          gateway: 172.88.0.254
+        - subnet: ${HELLO_NET}.0/24
+          gateway: ${HELLO_NET}.254
     driver_opts:
       com.docker.network.bridge.name: hellonet0
 
