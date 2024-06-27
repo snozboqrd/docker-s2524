@@ -1,0 +1,4 @@
+FROM scratch
+COPY hello-http /
+COPY status /var/lib/hello-http/status
+CMD  ["/hello-http"]
