@@ -1,0 +1,41 @@
+---
+services:
+  hello-1:
+    image: bob2606/hello-http:0.8.9
+    container_name: hello-1
+    hostname: hello-1
+    ports:
+      - 8081:8080
+    networks:
+      hellonet:
+    restart: always
+    environment:
+      - MSG=Hello-1
+
+  hello-2:
+    image: bob2606/hello-http:0.8.9
+    container_name: hello-2
+    hostname: hello-2
+    ports:
+      - 8082:8080
+    networks:
+      hellonet:
+    restart: always
+    environment:
+      - MSG=Hello-2
+
+  hello-3:
+    image: bob2606/hello-http:0.8.9
+    container_name: hello-3
+    hostname: hello-3
+    ports:
+      - 8083:8080
+    networks:
+      hellonet:
+    restart: always
+    environment:
+      - MSG=Hello-3
+
+networks:
+  hellonet:
+
