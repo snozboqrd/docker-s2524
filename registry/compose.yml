@@ -1,0 +1,19 @@
+---
+services:
+  registry:
+    image: registry:2.8
+    container_name: registry
+    hostname: registry
+    ports:
+      - 5000:5000
+    restart: always
+    volumes:
+      - registrydb:/var/lib/registry
+    networks:
+      registrynet:
+
+volumes:
+  registrydb:
+
+networks:
+  registrynet:
