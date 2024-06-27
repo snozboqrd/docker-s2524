@@ -1,41 +1,59 @@
 ---
 services:
   hello-1:
-    image: bob2606/hello-http:0.8.9
+    image: bob2606/hello-http:0.8.15
     container_name: hello-1
     hostname: hello-1
-    ports:
-      - 8081:8080
     networks:
       hellonet:
+      proxynet:
     restart: always
     environment:
       - MSG=Hello-1
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_proxynet
+      - traefik.http.services.hello_1.loadbalancer.server.port=8080
+      - traefik.http.routers.hello_1.rule=PathPrefix(`/hello-1`)
+      - traefik.http.middlewares.strip_1.stripprefix.prefixes=/hello-1
+      - traefik.http.routers.hello_1.middlewares=strip_1
 
   hello-2:
     image: bob2606/hello-http:0.8.9
     container_name: hello-2
     hostname: hello-2
-    ports:
-      - 8082:8080
     networks:
       hellonet:
+      proxynet:
     restart: always
     environment:
       - MSG=Hello-2
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_proxynet
+      - traefik.http.services.hello_2.loadbalancer.server.port=8080
+      - traefik.http.routers.hello_2.rule=Host(`hello-2.stage.local`)
 
   hello-3:
     image: bob2606/hello-http:0.8.9
     container_name: hello-3
     hostname: hello-3
-    ports:
-      - 8083:8080
     networks:
       hellonet:
+      proxynet:
     restart: always
     environment:
       - MSG=Hello-3
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_proxynet
+      - traefik.http.services.hello_3.loadbalancer.server.port=8080
+      - traefik.http.routers.hello_3.rule=(Host(`hello-3.stage.local`) && PathPrefix(`/hello-3`))
+      - traefik.http.middlewares.strip_3.stripprefix.prefixes=/hello-3
+      - traefik.http.routers.hello_3.middlewares=strip_3
 
 networks:
   hellonet:
-
+  proxynet:
+    external: true
+    name: traefik_proxynet
