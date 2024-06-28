@@ -1,0 +1,23 @@
+---
+services:
+  db:
+    image: mariadb:10.8
+    volumes:
+      - datadb:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=azerty
+      - MARIADB_DATABASE=stage
+    networks:
+      lempnet:
+
+networks:
+  lempnet:
+    name: wwwphp_lempnet
+    external: true
+
+volumes:
+  datadb:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.56.200,vers=4.2
+      device: ":/datadb"
