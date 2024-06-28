@@ -1,0 +1,20 @@
+---
+services:
+  keep:
+    image: osixia/keepalived:2.0.20
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - KEEPALIVED_VIRTUAL_IPS=192.168.56.111
+      - KEEPALIVED_PRIORITY=100
+      - KEEPALIVED_INTERFACE=enp0s8
+      - KEEPALIVED_UNICAST_PEERS=""
+    deploy:
+      mode: global
+    networks:
+      host:
+
+networks:
+  host:
+    external:
+      name: host
