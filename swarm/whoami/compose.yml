@@ -1,0 +1,12 @@
+---
+services:
+  who1:
+    image: traefik/whoami
+    hostname: who1
+    ports:
+      - 8080:80
+    networks:
+      whonet:
+
+networks:
+  whonet:
