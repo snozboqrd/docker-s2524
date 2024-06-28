@@ -5,10 +5,12 @@ services:
     volumes:
       - datadb:/var/lib/mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=azerty
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/mariadb
       - MARIADB_DATABASE=stage
     networks:
       lempnet:
+    secrets:
+      - mariadb
 
 networks:
   lempnet:
@@ -21,3 +23,7 @@ volumes:
       type: nfs
       o: addr=192.168.56.200,vers=4.2
       device: ":/datadb"
+
+secrets:
+  mariadb:
+    external: true
