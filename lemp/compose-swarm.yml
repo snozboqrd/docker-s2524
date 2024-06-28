@@ -1,0 +1,66 @@
+---
+x-logging: &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-file: 5
+      max-size: 10m
+
+services:
+  www:
+    image: nginx:1.26
+    volumes:
+      - nginx-conf:/etc/nginx/conf.d
+      - site:/usr/share/nginx/html
+      - nginxlog:/var/log/nginx
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost/healthz
+      interval: 4s
+      timeout: 1s
+      retries: 2
+    ports:
+      - 80:80
+    networks:
+      lempnet:
+    <<: *default-logging
+
+  php:
+    image: 192.168.56.200:5000/php-mysql:8.2-fpm
+    volumes:
+      - site:/var/www/html
+    networks:
+      lempnet:
+    <<: *default-logging
+
+networks:
+  lempnet:
+    ipam:
+      config:
+        - subnet: 172.80.0.0/16
+    driver_opts:
+      com.docker.network.bridge.name: lempnet0
+
+volumes:
+  nginx-conf:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.56.200,vers=4.2
+      device: ":/nginx-conf"
+
+  nginxlog:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.56.200,vers=4.2
+      device: ":/nginxlog"
+
+  site:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.56.200,vers=4.2
+      device: ":/site"
+
+
